@@ -51,14 +51,18 @@ class Walker {
 		}
 		int currentTime = millis();
 		if(currentTime>=(timerStart+interval)&&currentTime>=(timerStart+interval+500)){
-			interval = int(random(3));
-			interval = interval*1000;
-			direction = int(random(4));
+			changeDirection();
 			timerStart=currentTime;
 		}
                  x = constrain(x, 0, width-11);
                  y = constrain(y, 0, height-11);
 
 		
+  	}
+  	void changeDirection(){
+  		interval = int(random(3));
+		interval = interval*1000;
+		direction = int(random(4));
+  	
   	}
 }
