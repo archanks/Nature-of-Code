@@ -65,6 +65,8 @@ class Walker {
 		if(x>=width-11 || x<=11 || y>=height-11|| y<=11){
 			changeDirection();
 		}
+		x = constrain(x, 0, width-10);
+        y = constrain(y, 0, height-10);
 		
   	}
   	void changeDirection(){
