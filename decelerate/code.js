@@ -4,42 +4,46 @@ float c;
 void setup() {
   size(960, 500);
   smooth();
-  mover = new Mover(2,30, 100);
+  mover = new Mover(2,30, 410);
   c = 0.0001;
 }
 
 void draw() {
-  background(255);
+  background(0,0);
 
 
 
+    PVector gravity = new PVector(0, 0.1*mover.mass);
     PVector friction = mover.velocity.get();
     friction.mult(-1); 
     friction.normalize();
     friction.mult(c);
 
     mover.applyForce(friction);
+    mover.applyForce(gravity);
     mover.update();
     mover.display();
     mover.checkEdges();
 }
 
 void keyPressed(){
-      c = mover.acceleration.get().mag();
+      c = 0.0001;
       if (key == CODED) {
-        if (keyCode == UP) {
-           PVector wind = new PVector(0,-0.5);
-           mover.applyForce(wind);
-        } else if (keyCode == DOWN) {
-          PVector wind = new PVector(0, 0.5);
-          mover.applyForce(wind);
-        } else if(keyCode == LEFT){
-          PVector wind = new PVector(-0.5, 0);
+        if(keyCode == LEFT){
+          PVector wind = new PVector(-0.75, 0);
+           wind.mult(10);
           mover.applyForce(wind);
         }
         else if(keyCode==RIGHT){
-          PVector wind = new PVector(0.5, 0);
+          PVector wind = new PVector(0.75, 0);
+           wind.mult(10);
           mover.applyForce(wind);
+        }
+        else if(keyCode==UP){
+          PVector wind = new PVector(0,-0.75);
+           wind.mult(10);
+          mover.applyForce(wind);
+        
         }
       }
 }
@@ -70,13 +74,13 @@ class Mover {
   
   void update() {
     velocity.add(acceleration);
+    velocity.limit(5);
     location.add(velocity);
     acceleration.mult(0);
   }
 
   void display() {
-    stroke(0);
-    strokeWeight(2);
+    noStroke();
     fill(0,127);
     ellipse(location.x,location.y,mass*16,mass*16);
   }
@@ -85,18 +89,16 @@ class Mover {
 
     if (location.x > width) {
       location.x = width;
-      velocity.mult(0);
     } else if (location.x < 0) {
       location.x = 0;
-      velocity.mult(0);
     }
 
-    if (location.y > height) {
-      velocity.y *= -1;
-      velocity.mult(0);
-    }else if(location.y < 0) {
-      location.y = 0;
-      velocity.mult(0);
+    if (location.y > 415) {
+      velocity.y*=-1;
+      location.y=415;
+    }else if(location.y < 15) {
+      velocity.y*=-1;
+      location.y = 15;
     }
 
   }
